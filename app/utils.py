@@ -11,7 +11,7 @@ month_dict = {'01': 'Январь', '02': 'Февраль', '03': 'Март', '0
 
 
 def open_month(file_name, month, mode="r"):
-    with open(PATH / file_name, mode, encoding="utf-8") as f:
+    with open(PATH / file_name, mode) as f:
         month_sum, month_sum_ser = 0.0, 0.0
         for i in [i.strip().split('\n') for i in f.read().split('#@#')[1:]]:
             st0, st1 = i[0].split('|'), i[1].split('|')
@@ -35,7 +35,7 @@ def open_month(file_name, month, mode="r"):
 
         
 def open_order(file_name, order_number, mode="r"):
-    with open(PATH / file_name, mode, encoding="utf-8") as f:
+    with open(PATH / file_name, mode) as f:
         for i in [i.strip().split('\n') for i in f.read().split('#@#')[1:]]:
             st0, st1 = i[0].split('|'), i[1].split('|')
             if st0[0] == order_number and st0[12] == '  .  ':
