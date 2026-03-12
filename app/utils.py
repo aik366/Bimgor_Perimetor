@@ -24,14 +24,14 @@ def open_month(file_name, month, mode="r"):
                         continue
                     str_sum = (int(dlina)*2+int(visota)*2)/1000*int(kol)
                     zakaz_sum += str_sum
-                print(f"{st0[0]}: {zakaz_sum:.2f}")
+                print(f"{st0[0]}: {zakaz_sum:.2f} м.п.")
                 if st0[1].strip() == "Сердюченко":
                     month_sum_ser += zakaz_sum
                 else:
                     month_sum += zakaz_sum
-        print(f"Общий метраж Сердюченко, за {month_dict.get(f'{month:0>2}')} ({month:0>2}) : {month_sum_ser:.2f}")
-        print(f"Общий метраж Мы, за {month_dict.get(f'{month:0>2}')} ({month:0>2}) : {month_sum:.2f}")
-        print(f"Итого за {month_dict.get(f'{month:0>2}')} ({month:0>2}): {(month_sum + month_sum_ser):.2f}")
+        print(f"Общий метраж Сердюченко, за {month_dict.get(f'{month:0>2}')} ({month:0>2}) : {month_sum_ser:.2f} м.п.")
+        print(f"Общий метраж Мы, за {month_dict.get(f'{month:0>2}')} ({month:0>2}) : {month_sum:.2f} м.п.")
+        print(f"Итого за {month_dict.get(f'{month:0>2}')} ({month:0>2}): {(month_sum + month_sum_ser):.2f} м.п.")
 
         
 def open_order(file_name, order_number, mode="r"):
