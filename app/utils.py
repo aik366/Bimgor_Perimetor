@@ -19,28 +19,33 @@ def print_color(text, color=Fore.WHITE):
 
 def open_month(file_name, month, mode="r"):
     with open(PATH / file_name, mode) as f:
-        month_sum, month_sum_ser = 0.0, 0.0
+        sum_pm, sum_pm_ser, sum_km, sum_km_ser = 0.0, 0.0, 0.0, 0.0
         for i in [i.strip().split('\n') for i in f.read().split('#@#')[1:]]:
             st0, st1 = i[0].split('|'), i[1].split('|')
             if st0[2][3:5] == f"{month:0>2}" and st0[12] == '  .  ':
-                zakaz_sum = 0.0
+                zakaz_sum_pm, zakaz_sum_km = 0.0, 0.0
                 for j in i[2:]:
                     poz, dlina, visota, kol, pusto, vid = j.split("|")[0:6]
                     if poz == "R" or vid[0] in ("R", "К") or int(dlina) < 50 or int(visota) < 50:
                         continue
-                    str_sum = (int(dlina) * 2 + int(visota) * 2) / 1000 * int(kol)
-                    zakaz_sum += str_sum
-                print_color(f"{st0[0]}: {zakaz_sum:.2f} м.п.", Fore.YELLOW)
+                    str_sum_pm = (int(dlina) * 2 + int(visota) * 2) / 1000 * int(kol)
+                    str_sum_km = int(dlina) * int(visota) / 1000000 * int(kol)
+                    zakaz_sum_pm += str_sum_pm
+                    zakaz_sum_km += str_sum_km
+                print_color(f"{st0[0]}: {zakaz_sum_pm:.2f} пм {zakaz_sum_km:.2f} км", Fore.YELLOW)
                 if st0[1].strip() == "Сердюченко":
-                    month_sum_ser += zakaz_sum
+                    sum_pm_ser += zakaz_sum_pm
+                    sum_km_ser += zakaz_sum_km
                 else:
-                    month_sum += zakaz_sum
+                    sum_pm += zakaz_sum_pm
+                    sum_km += zakaz_sum_km
+
         print_color(
-            f"Общий метраж Сердюченко, за {month_dict.get(f'{month:0>2}')} ({month:0>2}) : {month_sum_ser:.2f} м.п.",
+            f"Общий метраж Сердюченко, за {month_dict.get(f'{month:0>2}')} ({month:0>2}) : {sum_pm_ser:.2f} пм {sum_km_ser:.2f} км",
             Fore.GREEN)
-        print_color(f"Общий метраж Мы, за {month_dict.get(f'{month:0>2}')} ({month:0>2}) : {month_sum:.2f} м.п.",
+        print_color(f"Общий метраж Мы, за {month_dict.get(f'{month:0>2}')} ({month:0>2}) : {sum_pm:.2f} пм {sum_km:.2f} км",
                     Fore.GREEN)
-        print_color(f"Итого за {month_dict.get(f'{month:0>2}')} ({month:0>2}): {(month_sum + month_sum_ser):.2f} м.п.",
+        print_color(f"Итого за {month_dict.get(f'{month:0>2}')} ({month:0>2}): {(sum_pm + sum_pm_ser):.2f} пм {(sum_km + sum_km_ser):.2f} км",
                     Fore.RED)
 
 
@@ -50,16 +55,18 @@ def open_order(file_name, order_number, mode="r"):
             st0, st1 = i[0].split('|'), i[1].split('|')
             if st0[0] == order_number and st0[12] == '  .  ':
                 print_color(f"Заказ %: {st0[0]}", Fore.MAGENTA)
-                order_sum = 0.0
+                order_sum_pm, order_sum_km = 0.0, 0.0
                 for j in i[2:]:
-                    str_sum = 0.0
+                    str_sum_pm, str_sum_km = 0.0, 0.0
                     poz, dlina, visota, kol, pusto, vid = j.split("|")[0:6]
                     if poz == "R" or vid[0] in ("R", "К") or int(dlina) < 50 or int(visota) < 50:
                         continue
-                    str_sum = (int(dlina) * 2 + int(visota) * 2) / 1000 * int(kol)
-                    order_sum += str_sum
-                    print_color(f"{poz:>2}|{dlina:>4}|{visota:>4}|{kol:>2}|{vid:>3}| {str_sum} м.п.", Fore.YELLOW)
-                print_color(f"Общий метраж: {order_sum:.2f} м.п.", Fore.GREEN)
+                    str_sum_pm = (int(dlina) * 2 + int(visota) * 2) / 1000 * int(kol)
+                    str_sum_km = int(dlina) * int(visota) / 1000000 * int(kol)
+                    order_sum_pm += str_sum_pm
+                    order_sum_km += str_sum_km
+                    print_color(f"{poz:>2}|{dlina:>4}|{visota:>4}|{kol:>2}|{vid:>3}| {str_sum_pm:.2f} пм {str_sum_km:.2f} км", Fore.YELLOW)
+                print_color(f"Общий метраж: {order_sum_pm:.2f} пм {order_sum_km:.2f} км", Fore.GREEN)
                 break
         else:
             print("Заказ не найден")
